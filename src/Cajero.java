@@ -49,12 +49,6 @@ public class Cajero {
     }
 
     public Boolean dispensarEfectivo(Double monto) {
-        if (!"Activo".equals(estado)) {
-            return false;
-        }
-        if (monto == null) {
-            return false;
-        }
         if (monto > 0 && monto <= saldoDisponible) {
             saldoDisponible = saldoDisponible - monto;
             return true;
@@ -63,13 +57,6 @@ public class Cajero {
     }
 
     public Boolean extraer(CuentaBancaria cuenta, Double monto) {
-        if (cuenta == null || monto == null) {
-            return false;
-        }
-        if (!"Activo".equals(estado)) {
-            return false;
-        }
-
         // La cuenta y el cajero deben tener fondos antes de descontar.
         if (monto > 0 && monto <= saldoDisponible) {
             Boolean extraccionRealizada = cuenta.extraer(monto);
@@ -86,13 +73,6 @@ public class Cajero {
     }
 
     public void recargarEfectivo(Double monto) {
-        if (monto == null) {
-            return;
-        }
-        // isFinite descarta valores especiales como infinito.
-        if (!Double.isFinite(monto)) {
-            return;
-        }
         if (monto > 0) {
             saldoDisponible = saldoDisponible + monto;
         }

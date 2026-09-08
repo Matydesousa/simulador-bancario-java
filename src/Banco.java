@@ -49,16 +49,6 @@ public class Banco {
     }
 
     public void agregarCajero(Cajero cajero) {
-        if (cajero == null) {
-            return;
-        }
-        if (cajero.getBanco() != this) {
-            return;
-        }
-        if (buscarCajero(cajero.getNumeroSerie()) != null) {
-            return;
-        }
-
         cajeros = Arrays.copyOf(cajeros, cajeros.length + 1);
         cajeros[cajeros.length - 1] = cajero;
     }
@@ -77,13 +67,6 @@ public class Banco {
     }
 
     public void agregarCuenta(CuentaBancaria cuenta) {
-        if (cuenta == null) {
-            return;
-        }
-        if (buscarCuenta(cuenta.getNumeroCuenta()) != null) {
-            return;
-        }
-
         cuentas = Arrays.copyOf(cuentas, cuentas.length + 1);
         cuentas[cuentas.length - 1] = cuenta;
     }

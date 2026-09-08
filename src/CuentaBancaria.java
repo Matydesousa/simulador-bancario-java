@@ -38,22 +38,12 @@ public class CuentaBancaria {
     }
 
     public void depositar(Double monto) {
-        if (monto == null) {
-            return;
-        }
-        // isFinite descarta valores especiales como infinito.
-        if (!Double.isFinite(monto)) {
-            return;
-        }
         if (monto > 0) {
             saldo = saldo + monto;
         }
     }
 
     public Boolean extraer(Double monto) {
-        if (monto == null) {
-            return false;
-        }
         if (monto > 0 && monto <= saldo) {
             saldo = saldo - monto;
             return true;

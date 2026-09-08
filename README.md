@@ -26,7 +26,7 @@ Se conservan los atributos del UML, incluido double saldo, int capacidadBilletes
 
 Los metodos de alta y busqueda reciben el objeto o identificador necesario. Void del UML se implementa como void. Cajero.extraer(cuenta, monto) coordina la extraccion: comprueba el efectivo y solo descuenta ambos saldos si la cuenta acepta el movimiento. dispensarEfectivo solo modifica el efectivo de la terminal; para una extraccion de una cuenta se utiliza extraer.
 
-Main demuestra el saldo inicial de 120000, la extraccion de 20000, dos referencias a la misma cuenta, operaciones rechazadas, recarga y busqueda. Un mismo objeto cuenta puede usarse desde distintos cajeros.
+Main demuestra el saldo inicial de 120000, la extraccion de 20000, dos referencias a la misma cuenta, getters y setters, recarga y busqueda. Un mismo objeto cuenta puede usarse desde distintos cajeros.
 
 ## Alcance de esta base
 
@@ -37,3 +37,9 @@ Los movimientos invalidos no cambian el saldo; las extracciones devuelven false.
 ## Trabajo en grupo
 
 Clonar el repositorio, abrirlo en IntelliJ y ejecutar Main antes de modificarlo. Coordinar los cambios de cada clase entre integrantes. Los archivos compilados de out no se suben al repositorio.
+
+## Estilo de clase
+
+Los constructores asignan los parametros con this, como en el ejercicio de Avion. Los getters devuelven un atributo y los setters asignan el nuevo valor, como en el ejercicio de Cliente de los apuntes. Se incluyen setters para datos descriptivos (nombre, direccion, ubicacion, estado, titular y tipo de cuenta). Los identificadores, el banco asignado y los saldos no tienen setters para conservar las relaciones y las reglas del Word.
+
+Main usa objetos creados con new, llamadas a metodos y System.out.println. Las validaciones se escriben en bloques if separados. Se mantienen Arrays.copyOf para agregar posiciones y Double.isFinite en depositos y recargas para evitar ingresar infinito; no se usan frameworks, streams, lambdas, break ni continue. Los constructores completos son suficientes para este TP; el constructor vacio del ejercicio Cliente no es un requisito del Word.

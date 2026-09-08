@@ -20,31 +20,63 @@ public class Cajero {
         return numeroSerie;
     }
 
-    public Banco getBanco() {
-        return banco;
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Double getSaldoDisponible() {
         return saldoDisponible;
     }
 
+    public int getCapacidadBilletes() {
+        return capacidadBilletes;
+    }
+
+    public Banco getBanco() {
+        return banco;
+    }
+
     public Boolean dispensarEfectivo(Double monto) {
-        if ("Activo".equals(estado) && monto != null && Double.isFinite(monto)
-                && monto > 0 && monto <= saldoDisponible) {
+        if (!"Activo".equals(estado)) {
+            return false;
+        }
+        if (monto == null) {
+            return false;
+        }
+        if (monto > 0 && monto <= saldoDisponible) {
             saldoDisponible = saldoDisponible - monto;
             return true;
         }
         return false;
     }
 
-    // Comprueba ambos saldos antes de modificar la cuenta y el cajero.
     public Boolean extraer(CuentaBancaria cuenta, Double monto) {
-        if (cuenta == null || !"Activo".equals(estado) || monto == null
-                || !Double.isFinite(monto) || monto <= 0 || monto > saldoDisponible) {
+        if (cuenta == null || monto == null) {
             return false;
         }
-        if (cuenta.extraer(monto)) {
-            return dispensarEfectivo(monto);
+        if (!"Activo".equals(estado)) {
+            return false;
+        }
+
+        // La cuenta y el cajero deben tener fondos antes de descontar.
+        if (monto > 0 && monto <= saldoDisponible) {
+            Boolean extraccionRealizada = cuenta.extraer(monto);
+            if (extraccionRealizada) {
+                dispensarEfectivo(monto);
+                return true;
+            }
         }
         return false;
     }
@@ -54,15 +86,27 @@ public class Cajero {
     }
 
     public void recargarEfectivo(Double monto) {
-        if (monto != null && Double.isFinite(monto) && monto > 0) {
+        if (monto == null) {
+            return;
+        }
+        // isFinite descarta valores especiales como infinito.
+        if (!Double.isFinite(monto)) {
+            return;
+        }
+        if (monto > 0) {
             saldoDisponible = saldoDisponible + monto;
         }
     }
 
     @Override
     public String toString() {
-        return "Cajero{" + "numeroSerie=" + numeroSerie + ", ubicacion='" + ubicacion + '\''
-                + ", estado='" + estado + '\'' + ", saldoDisponible=" + saldoDisponible
-                + ", capacidadBilletes=" + capacidadBilletes + ", banco=" + banco.getNombre() + '}';
+        return "Cajero{" +
+                "numeroSerie=" + numeroSerie +
+                ", ubicacion=" + ubicacion +
+                ", estado=" + estado +
+                ", saldoDisponible=" + saldoDisponible +
+                ", capacidadBilletes=" + capacidadBilletes +
+                ", banco=" + banco.getNombre() +
+                '}';
     }
 }

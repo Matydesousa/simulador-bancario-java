@@ -17,14 +17,44 @@ public class CuentaBancaria {
         return numeroCuenta;
     }
 
+    public String getTitular() {
+        return titular;
+    }
+
+    public void setTitular(String titular) {
+        this.titular = titular;
+    }
+
+    public String getTipoCuenta() {
+        return tipoCuenta;
+    }
+
+    public void setTipoCuenta(String tipoCuenta) {
+        this.tipoCuenta = tipoCuenta;
+    }
+
+    public String getCbu() {
+        return cbu;
+    }
+
     public void depositar(Double monto) {
-        if (monto != null && Double.isFinite(monto) && monto > 0) {
+        if (monto == null) {
+            return;
+        }
+        // isFinite descarta valores especiales como infinito.
+        if (!Double.isFinite(monto)) {
+            return;
+        }
+        if (monto > 0) {
             saldo = saldo + monto;
         }
     }
 
     public Boolean extraer(Double monto) {
-        if (monto != null && Double.isFinite(monto) && monto > 0 && monto <= saldo) {
+        if (monto == null) {
+            return false;
+        }
+        if (monto > 0 && monto <= saldo) {
             saldo = saldo - monto;
             return true;
         }
@@ -37,8 +67,12 @@ public class CuentaBancaria {
 
     @Override
     public String toString() {
-        return "CuentaBancaria{" + "numeroCuenta=" + numeroCuenta + ", saldo=" + saldo
-                + ", titular='" + titular + '\'' + ", tipoCuenta='" + tipoCuenta + '\''
-                + ", cbu='" + cbu + '\'' + '}';
+        return "CuentaBancaria{" +
+                "numeroCuenta=" + numeroCuenta +
+                ", saldo=" + saldo +
+                ", titular=" + titular +
+                ", tipoCuenta=" + tipoCuenta +
+                ", cbu=" + cbu +
+                '}';
     }
 }

@@ -20,17 +20,47 @@ public class Banco {
         this.cuentas = new CuentaBancaria[0];
     }
 
+    public Integer getCodigo() {
+        return codigo;
+    }
+
     public String getNombre() {
         return nombre;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getCuit() {
+        return cuit;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
     public void agregarCajero(Cajero cajero) {
-        if (cajero != null && cajero.getBanco() == this
-                && buscarCajero(cajero.getNumeroSerie()) == null) {
-            // El arreglo nuevo tiene una posicion mas; se copian las referencias.
-            cajeros = Arrays.copyOf(cajeros, cajeros.length + 1);
-            cajeros[cajeros.length - 1] = cajero;
+        if (cajero == null) {
+            return;
         }
+        if (cajero.getBanco() != this) {
+            return;
+        }
+        if (buscarCajero(cajero.getNumeroSerie()) != null) {
+            return;
+        }
+
+        cajeros = Arrays.copyOf(cajeros, cajeros.length + 1);
+        cajeros[cajeros.length - 1] = cajero;
     }
 
     public Cajero[] listarCajeros() {
@@ -47,10 +77,15 @@ public class Banco {
     }
 
     public void agregarCuenta(CuentaBancaria cuenta) {
-        if (cuenta != null && buscarCuenta(cuenta.getNumeroCuenta()) == null) {
-            cuentas = Arrays.copyOf(cuentas, cuentas.length + 1);
-            cuentas[cuentas.length - 1] = cuenta;
+        if (cuenta == null) {
+            return;
         }
+        if (buscarCuenta(cuenta.getNumeroCuenta()) != null) {
+            return;
+        }
+
+        cuentas = Arrays.copyOf(cuentas, cuentas.length + 1);
+        cuentas[cuentas.length - 1] = cuenta;
     }
 
     public CuentaBancaria buscarCuenta(Integer numeroCuenta) {
@@ -64,9 +99,14 @@ public class Banco {
 
     @Override
     public String toString() {
-        return "Banco{" + "codigo=" + codigo + ", nombre='" + nombre + '\''
-                + ", cuit='" + cuit + '\'' + ", direccion='" + direccion + '\''
-                + ", fechaAlta=" + fechaAlta + ", cajeros=" + Arrays.toString(cajeros)
-                + ", cuentas=" + Arrays.toString(cuentas) + '}';
+        return "Banco{" +
+                "codigo=" + codigo +
+                ", nombre=" + nombre +
+                ", cuit=" + cuit +
+                ", direccion=" + direccion +
+                ", fechaAlta=" + fechaAlta +
+                ", cajeros=" + Arrays.toString(cajeros) +
+                ", cuentas=" + Arrays.toString(cuentas) +
+                '}';
     }
 }

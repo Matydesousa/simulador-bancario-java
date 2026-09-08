@@ -56,11 +56,12 @@ public class Cajero {
         return false;
     }
 
+    // Primero revisamos el efectivo del cajero y despues intentamos retirar de la cuenta.
     public Boolean extraer(CuentaBancaria cuenta, Double monto) {
-        // La cuenta y el cajero deben tener fondos antes de descontar.
         if (monto > 0 && monto <= saldoDisponible) {
             Boolean extraccionRealizada = cuenta.extraer(monto);
             if (extraccionRealizada) {
+                // Como la cuenta acepto, descontamos tambien el efectivo del cajero.
                 dispensarEfectivo(monto);
                 return true;
             }

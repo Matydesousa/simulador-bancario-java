@@ -49,6 +49,7 @@ public class Banco {
     }
 
     public void agregarCajero(Cajero cajero) {
+        // sumamos un lugar mas, conservando los que ya teniamos.
         cajeros = Arrays.copyOf(cajeros, cajeros.length + 1);
         cajeros[cajeros.length - 1] = cajero;
     }
@@ -67,6 +68,7 @@ public class Banco {
     }
 
     public void agregarCuenta(CuentaBancaria cuenta) {
+        // Preparamos un lugar mas, conservando los que ya teniamos.
         cuentas = Arrays.copyOf(cuentas, cuentas.length + 1);
         cuentas[cuentas.length - 1] = cuenta;
     }

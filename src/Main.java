@@ -28,6 +28,7 @@ public class Main {
         System.out.println("Saldo de la cuenta: " + cuenta001.consultarSaldo());
         System.out.println("Efectivo del cajero: " + cajero1.getSaldoDisponible());
 
+        // Usamos otro nombre para la misma cuenta; no creamos una cuenta nueva.
         CuentaBancaria otraReferencia = cuenta001;
         otraReferencia.depositar(5000.0);
         System.out.println("Saldo despues del deposito: " + cuenta001.consultarSaldo());

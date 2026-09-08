@@ -1,10 +1,11 @@
+//Atributos 
 public class CuentaBancaria {
     private Integer numeroCuenta;
     private double saldo;
     private String titular;
     private String tipoCuenta;
     private String cbu;
-
+    //Inicia en la clase CuentaBancaria con sus datos 
     public CuentaBancaria(Integer numeroCuenta, double saldo, String titular, String tipoCuenta, String cbu) {
         this.numeroCuenta = numeroCuenta;
         this.saldo = saldo;
@@ -12,7 +13,7 @@ public class CuentaBancaria {
         this.tipoCuenta = tipoCuenta;
         this.cbu = cbu;
     }
-
+    //METODOS 
     public Integer getNumeroCuenta() {
         return numeroCuenta;
     }
@@ -36,8 +37,9 @@ public class CuentaBancaria {
     public String getCbu() {
         return cbu;
     }
-
+    //Hace un deposito en la cuenta bancaria agregando el monto especifico al saldo si el monto es valido
     public void depositar(Double monto) {
+        //valida que el monto no sea nulo 
         if (monto == null) {
             return;
         }
@@ -45,22 +47,25 @@ public class CuentaBancaria {
         if (!Double.isFinite(monto)) {
             return;
         }
+        //validar que el monto sea mayor a cero se suma al saldo 
         if (monto > 0) {
             saldo = saldo + monto;
         }
     }
-
+    //Operacion de extraer monoto si no es nulo, mayor a cero y la cuenta tenga el saldo suficiente 
     public Boolean extraer(Double monto) {
+        //valida que el no sea nulo 
         if (monto == null) {
             return false;
         }
+        //validar que ele monto sea positivo y menor o igual al saldo disponible 
         if (monto > 0 && monto <= saldo) {
             saldo = saldo - monto;
             return true;
         }
         return false;
     }
-
+    // consulta y da saldo actual de la cuenta
     public Double consultarSaldo() {
         return saldo;
     }

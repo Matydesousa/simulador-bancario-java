@@ -53,6 +53,7 @@ public class CuentaBancaria {
         }
         return false;
     }
+    //operacion de transferencia de monto
     public Boolean transferir(CuentaBancaria destino, double monto) {
         if (destino == null || destino.equals(this)) {
             return false;

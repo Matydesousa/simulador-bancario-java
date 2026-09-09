@@ -65,6 +65,23 @@ public class CuentaBancaria {
         }
         return false;
     }
+
+//operacion de transferencia de monto 
+    public Boolean transferir(CuentaBancaria destino, double monto) {
+        if (destino == null || destino.equals(this)) {
+            return false;
+        }
+        boolean extraccionExitosa = this.extraer(monto);
+        
+        if (extraccionExitosa){
+            destino.depositar(monto);
+            return true;
+        }
+        return false;
+    }
+
+
+    
     // consulta y da saldo actual de la cuenta
     public Double consultarSaldo() {
         return saldo;

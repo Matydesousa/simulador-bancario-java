@@ -1,3 +1,5 @@
+//representacion de un cajero automatico realiza operaciones como dispensar, extraer y consultar saldo
+// Atributos
 public class Cajero {
     private Integer numeroSerie;
     private String ubicacion;
@@ -5,7 +7,7 @@ public class Cajero {
     private Double saldoDisponible;
     private int capacidadBilletes;
     private Banco banco;
-
+    // Inicia la clase cajero con sus datos
     public Cajero(Integer numeroSerie, String ubicacion, String estado, Double saldoDisponible,
                   int capacidadBilletes, Banco banco) {
         this.numeroSerie = numeroSerie;
@@ -15,7 +17,7 @@ public class Cajero {
         this.capacidadBilletes = capacidadBilletes;
         this.banco = banco;
     }
-
+    //METODOS
     public Integer getNumeroSerie() {
         return numeroSerie;
     }
@@ -47,33 +49,35 @@ public class Cajero {
     public Banco getBanco() {
         return banco;
     }
-
+    // Dispensa monto si tiene saldo suficiente, tambien actualiza saldo disponible
     public Boolean dispensarEfectivo(Double monto) {
+        //Valida que el monto sea positivo menor o igual al saldo disponible en el cajero
         if (monto > 0 && monto <= saldoDisponible) {
             saldoDisponible = saldoDisponible - monto;
             return true;
         }
         return false;
     }
-
-    // Primero revisamos el efectivo del cajero y despues intentamos retirar de la cuenta.
+    // Realiza una extraccion de dinero coordinando la cuenta bancaria y el cajero
     public Boolean extraer(CuentaBancaria cuenta, Double monto) {
+
+        // La cuenta y el cajero deben tener fondos antes de descontar.
         if (monto > 0 && monto <= saldoDisponible) {
             Boolean extraccionRealizada = cuenta.extraer(monto);
             if (extraccionRealizada) {
-                // Como la cuenta acepto, descontamos tambien el efectivo del cajero.
                 dispensarEfectivo(monto);
                 return true;
             }
         }
         return false;
     }
-
+    //Consultar el saldo actual de una cuenta bancaria
     public Double consultarSaldo(CuentaBancaria cuenta) {
         return cuenta.consultarSaldo();
     }
-
+    // recargar el saldo disponible del cajero agregando monto especifico
     public void recargarEfectivo(Double monto) {
+        // si el monto es mayor a cero se suma al saldo disponible
         if (monto > 0) {
             saldoDisponible = saldoDisponible + monto;
         }

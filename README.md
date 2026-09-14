@@ -1,5 +1,7 @@
 # Simulador bancario en Java
 
+[![Java CI](https://github.com/Matydesousa/simulador-bancario-java/actions/workflows/java.yml/badge.svg)](https://github.com/Matydesousa/simulador-bancario-java/actions/workflows/java.yml)
+
 Proyecto educativo de programación orientada a objetos que representa las operaciones básicas de una red bancaria. El ejemplo modela bancos, cajeros automáticos y cuentas, y muestra cómo colaboran los objetos durante extracciones y transferencias.
 
 ## Funcionalidades

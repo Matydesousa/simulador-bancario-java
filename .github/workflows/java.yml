@@ -1,0 +1,25 @@
+name: Java CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Configurar Java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Compilar
+        run: javac -encoding UTF-8 -d out src/*.java tests/*.java
+
+      - name: Ejecutar pruebas
+        run: java -ea -cp out SimuladorBancarioTest

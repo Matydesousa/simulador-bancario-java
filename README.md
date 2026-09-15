@@ -22,53 +22,62 @@ El simulador ilustra cómo interactúan entidades del dominio bancario (bancos, 
 
 ## 🚀 Diagrama de Clases UML
 
+El diagrama resume los atributos y métodos de negocio principales; se omiten accesores y métodos de representación para mantenerlo legible.
+
 ```mermaid
 classDiagram
     class Banco {
+        -Integer codigo
         -String nombre
+        -String cuit
+        -String direccion
+        -Date fechaAlta
         -Cajero[] cajeros
         -CuentaBancaria[] cuentas
-        -int cantCajeros
-        -int cantCuentas
-        +Banco(String nombre, int capCajeros, int capCuentas)
-        +agregarCajero(Cajero cajero) boolean
-        +agregarCuenta(CuentaBancaria cuenta) boolean
-        +buscarCajero(int id) Cajero
-        +buscarCuenta(int numeroCuenta) CuentaBancaria
-        +transferir(int origen, int destino, double monto) boolean
+        +Banco(Integer codigo, String nombre, String cuit, String direccion, Date fechaAlta)
+        +agregarCajero(Cajero cajero) void
+        +listarCajeros() Cajero[]
+        +buscarCajero(Integer numeroSerie) Cajero
+        +agregarCuenta(CuentaBancaria cuenta) void
+        +buscarCuenta(Integer numeroCuenta) CuentaBancaria
     }
 
     class Cajero {
-        -int id
-        -double efectivoDisponible
+        -Integer numeroSerie
+        -String ubicacion
+        -String estado
+        -Double saldoDisponible
+        -int capacidadBilletes
         -Banco banco
-        +Cajero(int id, double efectivoInicial, Banco banco)
-        +recargarEfectivo(double monto) void
-        +extraer(CuentaBancaria cuenta, double monto) boolean
-        +consultarSaldo(CuentaBancaria cuenta) double
-        +getId() int
-        +getEfectivoDisponible() double
+        +Cajero(Integer numeroSerie, String ubicacion, String estado, Double saldoDisponible, int capacidadBilletes, Banco banco)
+        +dispensarEfectivo(Double monto) Boolean
+        +extraer(CuentaBancaria cuenta, Double monto) Boolean
+        +consultarSaldo(CuentaBancaria cuenta) Double
+        +recargarEfectivo(Double monto) void
     }
 
     class CuentaBancaria {
-        -int numeroCuenta
-        -String titular
+        -Integer numeroCuenta
         -double saldo
-        +CuentaBancaria(int numeroCuenta, String titular, double saldoInicial)
-        +depositar(double monto) boolean
-        +extraer(double monto) boolean
-        +getNumeroCuenta() int
-        +getTitular() String
-        +getSaldo() double
+        -String titular
+        -String tipoCuenta
+        -String cbu
+        +CuentaBancaria(Integer numeroCuenta, double saldo, String titular, String tipoCuenta, String cbu)
+        +depositar(Double monto) void
+        +extraer(Double monto) Boolean
+        +transferir(CuentaBancaria destino, double monto) Boolean
+        +consultarSaldo() Double
     }
 
     class Main {
         +main(String[] args) void
     }
 
-    Banco "1" *-- "0..*" Cajero : administra
-    Banco "1" *-- "0..*" CuentaBancaria : gestiona
+    Banco "1" o-- "0..*" Cajero : registra
+    Banco "1" o-- "0..*" CuentaBancaria : registra
+    Cajero --> Banco : pertenece a
     Cajero --> CuentaBancaria : opera sobre
+    CuentaBancaria --> CuentaBancaria : transfiere a
     Main ..> Banco : inicializa y prueba
 ```
 
@@ -83,18 +92,19 @@ sequenceDiagram
     participant Cuenta as CuentaBancaria
 
     Usuario->>Cajero: solicitar extracción ($ monto)
-    alt Efectivo insuficiente en Cajero
-        Cajero-->>Usuario: rechazar (cajero sin efectivo suficiente)
-    else Efectivo disponible en Cajero
+    alt Monto inválido o efectivo insuficiente
+        Cajero-->>Usuario: false (operación rechazada)
+    else El cajero dispone de efectivo
         Cajero->>Cuenta: extraer(monto)
         alt Saldo insuficiente en Cuenta
-            Cuenta-->>Cajero: false (fondos insuficientes)
-            Cajero-->>Usuario: rechazar operación
+            Cuenta-->>Cajero: false
+            Cajero-->>Usuario: false (operación rechazada)
         else Saldo suficiente en Cuenta
             Cuenta->>Cuenta: saldo -= monto
-            Cuenta-->>Cajero: true (extracción exitosa)
-            Cajero->>Cajero: efectivoDisponible -= monto
-            Cajero-->>Usuario: entregar dinero y comprobante
+            Cuenta-->>Cajero: true
+            Cajero->>Cajero: dispensarEfectivo(monto)
+            Cajero->>Cajero: saldoDisponible -= monto
+            Cajero-->>Usuario: true (extracción completada)
         end
     end
 ```
@@ -151,7 +161,7 @@ java -ea -cp out SimuladorBancarioTest
 ## 📂 Estructura del Repositorio
 
 ```text
-ACTIVIDAD_01_POO/
+simulador-bancario-java/
 ├── .github/workflows/
 │   └── java.yml             # Integración continua con GitHub Actions
 ├── src/
